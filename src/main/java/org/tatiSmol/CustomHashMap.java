@@ -1,16 +1,13 @@
 package org.tatiSmol;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * CustomHashMap class implements Map and Iterable interfaces.
  * This is a custom implementation of HashMap class.
  *
- * @param <K> the type of keys maintained by this map
- * @param <V> the type of mapped values
+ * @param <K> the type of keys maintained by this map.
+ * @param <V> the type of mapped values.
  */
 public class CustomHashMap<K, V> implements Map<K, V>, Iterable<Map.Entry<K, V>> {
     private static final int DEFAULT_CAPACITY = 16;
@@ -49,14 +46,24 @@ public class CustomHashMap<K, V> implements Map<K, V>, Iterable<Map.Entry<K, V>>
         putAll(m);
     }
 
+    /**
+     * Returns the number of key-value pairs in the map.
+     *
+     * @return the number of key-value mappings in this map.
+     */
     @Override
     public int size() {
-        return 0;
+        return size;
     }
 
+    /**
+     * Checks if the map is empty.
+     *
+     * @return true, if size equals 0.
+     */
     @Override
     public boolean isEmpty() {
-        return false;
+        return size == 0;
     }
 
     @Override
@@ -114,21 +121,108 @@ public class CustomHashMap<K, V> implements Map<K, V>, Iterable<Map.Entry<K, V>>
         return null;
     }
 
+    /**
+     * The Node inner class implements the Map.Entry interface.
+     * It represents a node in MyHashMap table.
+     *
+     * @param <K> the type of keys maintained by this map.
+     * @param <V> the type of mapped values.
+     */
     static class Node<K, V> implements Map.Entry<K, V> {
+        private Node<K, V> next;
+        private final K key;
+        private V value;
 
+        /**
+         * Creates a new node with the specified key and value.
+         *
+         * @param key key for the new node.
+         * @param value value for the new node.
+         */
+        public Node(K key, V value) {
+            this.key = key;
+            this.value = value;
+        }
+
+        /**
+         * Returns the key corresponding to this entry.
+         *
+         * @return key.
+         */
         @Override
         public K getKey() {
-            return null;
+            return key;
         }
 
+        /**
+         * Returns the value corresponding to this entry.
+         *
+         * @return value.
+         */
         @Override
         public V getValue() {
-            return null;
+            return value;
         }
 
+        /**
+         * Replaces the value corresponding to this entry with the specified value.
+         *
+         * @param value new value to be stored in this entry.
+         * @return old value corresponding to the entry.
+         */
         @Override
         public V setValue(V value) {
-            return null;
+            V oldValue = this.value;
+            this.value = value;
+            return oldValue;
+        }
+
+        /**
+         * Returns the next node in the list.
+         *
+         * @return the next node in the list.
+         */
+        public Node<K, V> getNext() {
+            return next;
+        }
+
+        /**
+         * Sets the next node in the list.
+         *
+         * @param next the next node to be set in the list.
+         */
+        public void setNext(Node<K, V> next) {
+            this.next = next;
+        }
+
+        /**
+         * Returns a hash code for this node.
+         *
+         * @return a hash code value for this object.
+         */
+        @Override
+        public int hashCode() {
+            return Objects.hash(key, value);
+        }
+
+        /**
+         * Compares the specified object with this entry for equality.
+         *
+         * @param obj object to be compared for equality with this map entry.
+         * @return true, if the specified object is equal to this map entry.
+         */
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj) {
+                return true;
+            }
+
+            if (obj == null || getClass() != obj.getClass()) {
+                return false;
+            }
+
+            Node<?, ?> node = (Node<?, ?>) obj;
+            return Objects.equals(key, node.getKey()) && Objects.equals(value, node.getValue());
         }
     }
 }
