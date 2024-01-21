@@ -71,4 +71,22 @@ public class CustomHashMap<K, V> implements Map<K, V>, Iterable<Map.Entry<K, V>>
     public Iterator<Entry<K, V>> iterator() {
         return null;
     }
+
+    static class Node<K, V> implements Map.Entry<K, V> {
+
+        @Override
+        public K getKey() {
+            return null;
+        }
+
+        @Override
+        public V getValue() {
+            return null;
+        }
+
+        @Override
+        public V setValue(V value) {
+            return null;
+        }
+    }
 }
