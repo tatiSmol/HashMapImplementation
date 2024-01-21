@@ -233,34 +233,90 @@ public class CustomHashMap<K, V> implements Map<K, V>, Iterable<Map.Entry<K, V>>
         return null;
     }
 
+    /**
+     * Copies all the mappings from the specified map to this map.
+     *
+     * @param m mappings to be stored in this map.
+     */
     @Override
     public void putAll(Map<? extends K, ? extends V> m) {
+        if (m.isEmpty()) {
+            return;
+        }
 
+        for (Map.Entry<? extends K, ? extends V> entry : m.entrySet()) {
+            put(entry.getKey(), entry.getValue());
+        }
     }
 
+    /**
+     * Removes all the mappings from the map.
+     */
     @Override
     public void clear() {
-
+        Arrays.fill(table, null);
+        size = 0;
     }
 
+    /**
+     * Returns a set of all keys contained in this map.
+     *
+     * @return set of all keys contained in this map.
+     */
     @Override
     public Set<K> keySet() {
-        return null;
+        Set<K> kSet = new HashSet<>();
+        for (Node<K, V> node : table) {
+            while (node != null) {
+                kSet.add(node.getKey());
+                node = node.getNext();
+            }
+        }
+        return kSet;
     }
 
+    /**
+     * Returns a collection of all values contained in this map.
+     *
+     * @return collection of all values contained in this map.
+     */
     @Override
     public Collection<V> values() {
-        return null;
+        List<V> vList = new ArrayList<>();
+        for (Node<K, V> node : table) {
+            while (node != null) {
+                vList.add(node.getValue());
+                node = node.getNext();
+            }
+        }
+        return vList;
     }
 
+    /**
+     * Returns a set of all key-value pairs (entries) contained in this map.
+     *
+     * @return set of all key-value pairs contained in this map.
+     */
     @Override
     public Set<Entry<K, V>> entrySet() {
-        return null;
+        Set<Entry<K, V>> eSet = new HashSet<>();
+        for (Node<K, V> node : table) {
+            while (node != null) {
+                eSet.add(node);
+                node = node.getNext();
+            }
+        }
+        return eSet;
     }
 
+    /**
+     * Returns an iterator over all key-value pairs contained in this map.
+     *
+     * @return an iterator over the entries in the map.
+     */
     @Override
     public Iterator<Entry<K, V>> iterator() {
-        return null;
+        return entrySet().iterator();
     }
 
     /**
