@@ -80,18 +80,65 @@ public class CustomHashMap<K, V> implements Map<K, V>, Iterable<Map.Entry<K, V>>
         return Math.abs(hash);
     }
 
+    /**
+     * Checks if the map contains a mapping for the specified key.
+     *
+     * @param key key whose presence in this map is to be tested.
+     * @return true, if the map contains a mapping for the specified key.
+     */
     @Override
     public boolean containsKey(Object key) {
+        int index = hash((K) key) % table.length;
+        Node<K, V> node = table[index];
+
+        while (node != null) {
+            if (node.getKey().equals(key)) {
+                return true;
+            }
+            node = node.getNext();
+        }
+
         return false;
     }
 
+    /**
+     * Checks if the map contains a mapping for the specified value.
+     *
+     * @param value value whose presence in this map is to be tested.
+     * @return true, if the map contains a mapping for the specified value.
+     */
     @Override
     public boolean containsValue(Object value) {
+        for (Node<K, V> node : table) {
+            while (node != null) {
+                if (node.getValue().equals(value)) {
+                    return true;
+                }
+                node = node.getNext();
+            }
+        }
+
         return false;
     }
 
+    /**
+     * Returns the value to which the specified key is mapped.
+     *
+     * @param key the key whose associated value is to be returned.
+     * @return the value to which the specified key is mapped, or null if the map contains no mapping for the key.
+     */
     @Override
     public V get(Object key) {
+        int index = hash((K) key) % table.length;
+        Node<K, V> node = table[index];
+
+        while (node != null) {
+            if (node.getKey().equals(key)) {
+                return node.getValue();
+            }
+            node = node.getNext();
+        }
+
         return null;
     }
 
@@ -157,8 +204,32 @@ public class CustomHashMap<K, V> implements Map<K, V>, Iterable<Map.Entry<K, V>>
         table = newTable;
     }
 
+    /**
+     * Removes the mapping for the specified key from the map.
+     *
+     * @param key key whose mapping is to be removed from the map.
+     * @return the previous value associated with the key, or null if there was no mapping for the key.
+     */
     @Override
     public V remove(Object key) {
+        int index = hash((K) key) % table.length;
+        Node<K, V> node = table[index];
+        Node<K, V> prevNode = null;
+
+        while (node != null) {
+            if (node.getKey().equals(key)) {
+                if (prevNode == null) {
+                    table[index] = node.getNext();
+                } else {
+                    prevNode.setNext(node.getNext());
+                }
+                size--;
+                return node.getValue();
+            }
+            prevNode = node;
+            node = node.getNext();
+        }
+
         return null;
     }
 
