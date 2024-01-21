@@ -1,5 +1,7 @@
 package org.tatiSmol;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.*;
 
 /**
@@ -66,6 +68,18 @@ public class CustomHashMap<K, V> implements Map<K, V>, Iterable<Map.Entry<K, V>>
         return size == 0;
     }
 
+    /**
+     * Computes the hash code for the given key.
+     *
+     * @param key the key to compute the hash code for. Must be not null.
+     * @return the hash code of the key.
+     */
+    public int hash(@NotNull K key) {
+        int hash = 31;
+        hash = hash * 17 + key.hashCode();
+        return Math.abs(hash);
+    }
+
     @Override
     public boolean containsKey(Object key) {
         return false;
@@ -81,9 +95,66 @@ public class CustomHashMap<K, V> implements Map<K, V>, Iterable<Map.Entry<K, V>>
         return null;
     }
 
+    /**
+     * Associates the specified value with the specified key in the map.
+     *
+     * @param key key with which the specified value is to be associated.
+     * @param value value to be associated with the specified key.
+     * @return the previous value associated with the key, or null if there was no mapping for the key.
+     */
     @Override
     public V put(K key, V value) {
+        if ((float) size / (float) table.length >= LOAD_FACTOR) {
+            resize();
+        }
+
+        int index = hash(key) % table.length;
+        Node<K, V> node = table[index];
+
+        if (node == null) {
+            table[index] = new Node<>(key, value);
+            size++;
+            return null;
+        }
+
+        while (node != null) {
+            if (node.getKey().equals(key)) {
+                V oldValue = node.getValue();
+                node.setValue(value);
+                return oldValue;
+            }
+            node = node.getNext();
+        }
+
+        Node<K, V> newNode = new Node<>(key, value);
+        newNode.setNext(table[index]);
+        table[index] = newNode;
+        size++;
+
         return null;
+    }
+
+    /**
+     * Doubles the size of the hash table and moves all existing nodes into a new, larger table..
+     */
+    private void resize() {
+        int newCapacity = table.length * 2;
+        Node<K, V>[] newTable = (Node<K, V>[]) new Node[newCapacity];
+
+        for (Node<K, V> oldNode : table) {
+            if (oldNode != null) {
+                Node<K, V> node = oldNode;
+                while (node != null) {
+                    int index = hash(node.getKey()) % newCapacity;
+                    Node<K, V> nextNode = node.next;
+                    node.next = newTable[index];
+                    newTable[index] = node;
+                    node = nextNode;
+                }
+            }
+        }
+
+        table = newTable;
     }
 
     @Override
