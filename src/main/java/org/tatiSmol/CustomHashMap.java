@@ -173,11 +173,6 @@ public class CustomHashMap<K, V> implements Map<K, V>, Iterable<Map.Entry<K, V>>
             node = node.getNext();
         }
 
-        Node<K, V> newNode = new Node<>(key, value);
-        newNode.setNext(table[index]);
-        table[index] = newNode;
-        size++;
-
         return null;
     }
 
@@ -334,7 +329,7 @@ public class CustomHashMap<K, V> implements Map<K, V>, Iterable<Map.Entry<K, V>>
         /**
          * Creates a new node with the specified key and value.
          *
-         * @param key key for the new node.
+         * @param key   key for the new node.
          * @param value value for the new node.
          */
         public Node(K key, V value) {
@@ -401,26 +396,6 @@ public class CustomHashMap<K, V> implements Map<K, V>, Iterable<Map.Entry<K, V>>
         @Override
         public int hashCode() {
             return Objects.hash(key, value);
-        }
-
-        /**
-         * Compares the specified object with this entry for equality.
-         *
-         * @param obj object to be compared for equality with this map entry.
-         * @return true, if the specified object is equal to this map entry.
-         */
-        @Override
-        public boolean equals(Object obj) {
-            if (this == obj) {
-                return true;
-            }
-
-            if (obj == null || getClass() != obj.getClass()) {
-                return false;
-            }
-
-            Node<?, ?> node = (Node<?, ?>) obj;
-            return Objects.equals(key, node.getKey()) && Objects.equals(value, node.getValue());
         }
     }
 }
