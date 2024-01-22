@@ -6,9 +6,7 @@ file.txt/
 out/
 
 ### IntelliJ IDEA ###
-.idea/*
-!misc.xml
-!vcs.xml
+.idea/
 *.iws
 *.iml
 *.ipr
