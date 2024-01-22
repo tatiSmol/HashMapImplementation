@@ -1,0 +1,1 @@
+typeSearchIndex = [{"l":"All Classes and Interfaces","u":"allclasses-index.html"},{"p":"org.tatiSmol","l":"CustomHashMap"},{"p":"org.tatiSmol","l":"CustomHashMap.Node"}];updateSearchResults();
